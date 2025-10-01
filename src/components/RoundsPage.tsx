@@ -56,7 +56,7 @@ function RoundsPageContent() {
   const [completedRounds, setCompletedRounds] = useState<CompletedRound[]>([]);
   const [players, setPlayers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'history' | 'new'>('history');
+  const [activeTab, setActiveTab] = useState<'history' | 'new'>('new');
   const [stats, setStats] = useState({
     totalCompletedRounds: 0,
     totalPlayers: 0,
@@ -124,15 +124,15 @@ function RoundsPageContent() {
   return (
     <div className="space-y-8">
       {/* Header épico con estadísticas */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-blue-50 rounded-3xl shadow-2xl p-8 border border-green-100">
+      <div className="relative overflow-hidden bg-gradient-to-br from-green-50 via-white to-blue-50 rounded-3xl shadow-2xl p-4 md:p-8 border border-green-100">
         <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-blue-500/5"></div>
         <div className="relative">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-4 md:mb-8">
             <div>
-              <h2 className="text-4xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-3">
+              <h2 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-2 md:mb-3">
                 🏌️‍♂️ Centro de Control de Rondas
               </h2>
-              <p className="text-xl text-gray-600 font-medium">
+              <p className="text-sm md:text-xl text-gray-600 font-medium">
                 Gestiona todas las rondas de la Gira GADO
               </p>
             </div>
@@ -143,59 +143,59 @@ function RoundsPageContent() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="group relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6">
+            <div className="group relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl md:rounded-2xl p-4 md:p-6 text-white shadow-lg md:shadow-xl hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
               <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
               <div className="relative">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="p-3 bg-white/20 rounded-xl">
-                    <Trophy className="h-6 w-6" />
+                <div className="flex items-center justify-between mb-2 md:mb-3">
+                  <div className="p-2 md:p-3 bg-white/20 rounded-lg md:rounded-xl">
+                    <Trophy className="h-4 w-4 md:h-6 md:w-6" />
                   </div>
                   <div className="text-right">
-                    <p className="text-blue-100 text-sm font-medium">Rondas Completadas</p>
-                    <p className="text-4xl font-bold">{completedRounds.length}</p>
+                    <p className="text-blue-100 text-xs md:text-sm font-medium">Rondas Completadas</p>
+                    <p className="text-2xl md:text-4xl font-bold">{completedRounds.length}</p>
                   </div>
                 </div>
-                <div className="flex items-center text-blue-100 text-sm">
-                  <TrendingUp className="h-4 w-4 mr-1" />
+                <div className="flex items-center text-blue-100 text-xs md:text-sm">
+                  <TrendingUp className="h-3 w-3 md:h-4 md:w-4 mr-1" />
                   <span>Historial total</span>
                 </div>
               </div>
             </div>
 
-            <div className="group relative overflow-hidden bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+            <div className="group relative overflow-hidden bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl md:rounded-2xl p-4 md:p-6 text-white shadow-lg md:shadow-xl hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
               <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
               <div className="relative">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="p-3 bg-white/20 rounded-xl">
-                    <Users className="h-6 w-6" />
+                <div className="flex items-center justify-between mb-2 md:mb-3">
+                  <div className="p-2 md:p-3 bg-white/20 rounded-lg md:rounded-xl">
+                    <Users className="h-4 w-4 md:h-6 md:w-6" />
                   </div>
                   <div className="text-right">
-                    <p className="text-purple-100 text-sm font-medium">Jugadores Activos</p>
-                    <p className="text-4xl font-bold">{players.length}</p>
+                    <p className="text-purple-100 text-xs md:text-sm font-medium">Jugadores Activos</p>
+                    <p className="text-2xl md:text-4xl font-bold">{players.length}</p>
                   </div>
                 </div>
-                <div className="flex items-center text-purple-100 text-sm">
-                  <Users className="h-4 w-4 mr-1" />
+                <div className="flex items-center text-purple-100 text-xs md:text-sm">
+                  <Users className="h-3 w-3 md:h-4 md:w-4 mr-1" />
                   <span>En la gira</span>
                 </div>
               </div>
             </div>
 
-            <div className="group relative overflow-hidden bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-6 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+            <div className="group relative overflow-hidden bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl md:rounded-2xl p-4 md:p-6 text-white shadow-lg md:shadow-xl hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
               <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
               <div className="relative">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="p-3 bg-white/20 rounded-xl">
-                    <TrendingUp className="h-6 w-6" />
+                <div className="flex items-center justify-between mb-2 md:mb-3">
+                  <div className="p-2 md:p-3 bg-white/20 rounded-lg md:rounded-xl">
+                    <TrendingUp className="h-4 w-4 md:h-6 md:w-6" />
                   </div>
                   <div className="text-right">
-                    <p className="text-orange-100 text-sm font-medium">Score Promedio</p>
-                    <p className="text-4xl font-bold">{stats.averageScore}</p>
+                    <p className="text-orange-100 text-xs md:text-sm font-medium">Score Promedio</p>
+                    <p className="text-2xl md:text-4xl font-bold">{stats.averageScore}</p>
                   </div>
                 </div>
-                <div className="flex items-center text-orange-100 text-sm">
-                  <MapPin className="h-4 w-4 mr-1" />
+                <div className="flex items-center text-orange-100 text-xs md:text-sm">
+                  <MapPin className="h-3 w-3 md:h-4 md:w-4 mr-1" />
                   <span>General</span>
                 </div>
               </div>
@@ -206,52 +206,54 @@ function RoundsPageContent() {
 
       {/* Tabs de navegación épicas */}
       <div className="bg-white rounded-3xl shadow-2xl border border-gray-100">
-        <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-8 py-2">
-          <nav className="flex space-x-8">
-            <button
-              onClick={() => setActiveTab('history')}
-              className={`py-6 px-4 border-b-3 font-bold text-lg transition-all duration-300 ${
-                activeTab === 'history'
-                  ? 'border-green-500 text-green-600 bg-white rounded-t-xl shadow-lg'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-white/50 rounded-t-xl'
-              }`}
-            >
-              <div className="flex items-center space-x-3">
-                <div className={`p-2 rounded-lg ${activeTab === 'history' ? 'bg-green-100' : 'bg-gray-100'}`}>
-                  <History className="h-5 w-5" />
-                </div>
-                <span>Historial</span>
-                {completedRounds.length > 0 && (
-                  <span className="bg-gray-500 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg">
-                    {completedRounds.length}
-                  </span>
-                )}
-              </div>
-            </button>
-
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-4 md:px-8 py-2">
+          <nav className="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0">
+            {/* NUEVA RONDA - PRIMERO */}
             <button
               onClick={() => setActiveTab('new')}
-              className={`py-8 px-8 border-b-3 font-bold text-xl transition-all duration-300 transform hover:scale-105 ${
+              className={`py-3 md:py-8 px-3 md:px-8 border-b-3 font-bold text-base md:text-xl transition-all duration-300 transform hover:scale-105 ${
                 activeTab === 'new'
                   ? 'border-green-500 text-green-600 bg-white rounded-t-xl shadow-lg'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-white/50 rounded-t-xl'
               }`}
             >
-              <div className="flex items-center space-x-4">
-                <div className={`p-3 rounded-xl ${activeTab === 'new' ? 'bg-green-100' : 'bg-gray-100'} shadow-lg`}>
-                  <Plus className="h-6 w-6" />
+              <div className="flex items-center justify-center space-x-2 md:space-x-4">
+                <div className={`p-1.5 md:p-3 rounded-lg md:rounded-xl ${activeTab === 'new' ? 'bg-green-100' : 'bg-gray-100'} shadow-lg`}>
+                  <Plus className="h-4 w-4 md:h-6 md:w-6" />
                 </div>
-                <span className="text-2xl font-black">+ NUEVA RONDA</span>
-                <div className="bg-gradient-to-r from-green-500 to-green-600 text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg animate-pulse">
+                <span className="text-base md:text-2xl font-black">+ NUEVA RONDA</span>
+                <div className="hidden md:block bg-gradient-to-r from-green-500 to-green-600 text-white text-xs md:text-sm font-bold px-2 md:px-4 py-1 md:py-2 rounded-full shadow-lg animate-pulse">
                   ¡EMPEZAR!
                 </div>
+              </div>
+            </button>
+
+            {/* HISTORIAL - SEGUNDO */}
+            <button
+              onClick={() => setActiveTab('history')}
+              className={`py-3 md:py-6 px-3 md:px-4 border-b-3 font-bold text-base md:text-lg transition-all duration-300 ${
+                activeTab === 'history'
+                  ? 'border-green-500 text-green-600 bg-white rounded-t-xl shadow-lg'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-white/50 rounded-t-xl'
+              }`}
+            >
+              <div className="flex items-center justify-center space-x-2 md:space-x-3">
+                <div className={`p-1.5 md:p-2 rounded-lg ${activeTab === 'history' ? 'bg-green-100' : 'bg-gray-100'}`}>
+                  <History className="h-4 w-4 md:h-5 md:w-5" />
+                </div>
+                <span>Historial</span>
+                {completedRounds.length > 0 && (
+                  <span className="bg-gray-500 text-white text-xs md:text-sm font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-full shadow-lg">
+                    {completedRounds.length}
+                  </span>
+                )}
               </div>
             </button>
           </nav>
         </div>
 
         {/* Contenido de las tabs */}
-        <div className="min-h-96 p-8">
+        <div className="min-h-96 p-4 md:p-8">
           {activeTab === 'history' && (
             <RoundHistory 
               rounds={completedRounds} 

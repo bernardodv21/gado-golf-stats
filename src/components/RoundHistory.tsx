@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { Calendar, MapPin, Target, Trophy, TrendingUp, Eye, Award, Zap, Star, Search, Filter, ChevronDown, X } from 'lucide-react';
+import { useState, useMemo, useEffect } from 'react';
+import { Calendar, MapPin, Target, Trophy, TrendingUp, Eye, Award, Zap, Star, Search, Filter, ChevronDown, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface CompletedRound {
   id: string;
@@ -52,6 +52,16 @@ export default function RoundHistory({ rounds }: RoundHistoryProps) {
   const [sortBy, setSortBy] = useState('recent');
   const [showFilters, setShowFilters] = useState(false);
   const [displayLimit, setDisplayLimit] = useState(10);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const roundsPerPage = 6;
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Obtener categorías y clubes únicos para los filtros
   const categories = useMemo(() => {
@@ -97,6 +107,19 @@ export default function RoundHistory({ rounds }: RoundHistoryProps) {
   const displayedRounds = filteredRounds.slice(0, displayLimit);
   const hasMore = filteredRounds.length > displayLimit;
 
+  const totalPages = Math.ceil(filteredRounds.length / roundsPerPage);
+  const startIndex = currentPage * roundsPerPage;
+  const endIndex = startIndex + roundsPerPage;
+  const currentRounds = filteredRounds.slice(startIndex, endIndex);
+
+  const goToPrevPage = () => {
+    setCurrentPage((prev) => Math.max(0, prev - 1));
+  };
+
+  const goToNextPage = () => {
+    setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1));
+  };
+
   const loadMore = () => {
     setDisplayLimit(prev => Math.min(prev + 10, filteredRounds.length));
   };
@@ -107,6 +130,7 @@ export default function RoundHistory({ rounds }: RoundHistoryProps) {
     setSelectedClub('');
     setSortBy('recent');
     setDisplayLimit(10);
+    setCurrentPage(0);
   };
 
   const getScoreColor = (scoreToPar: number) => {
@@ -257,9 +281,40 @@ export default function RoundHistory({ rounds }: RoundHistoryProps) {
         )}
       </div>
 
+      {/* Controles de navegación móvil para historial */}
+      {isMobile && filteredRounds.length > roundsPerPage && (
+        <div className="flex items-center justify-between mb-4 bg-white rounded-lg shadow-sm border border-gray-200 p-3">
+          <button
+            onClick={goToPrevPage}
+            disabled={currentPage === 0}
+            className={`p-2 rounded-lg ${
+              currentPage === 0
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600'
+            } transition-all`}
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+          <span className="text-sm font-semibold text-gray-600">
+            Rondas {startIndex + 1}-{Math.min(endIndex, filteredRounds.length)} de {filteredRounds.length}
+          </span>
+          <button
+            onClick={goToNextPage}
+            disabled={currentPage === totalPages - 1}
+            className={`p-2 rounded-lg ${
+              currentPage === totalPages - 1
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600'
+            } transition-all`}
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+        </div>
+      )}
+
       {/* Lista de rondas completadas */}
       <div className="space-y-4">
-        {displayedRounds.map((round, index) => (
+        {(isMobile ? currentRounds : displayedRounds).map((round, index) => (
           <div
             key={`${round.id}-${round.playerId}-${index}`}
             className="group relative overflow-hidden bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"

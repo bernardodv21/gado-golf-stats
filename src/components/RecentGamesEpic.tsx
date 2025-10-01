@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Trophy, Calendar, Star, Zap, TrendingUp, RefreshCw } from 'lucide-react';
+import { Trophy, Calendar, Star, Zap, TrendingUp, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
 import GameCardEpic from './GameCardEpic';
 
 export default function RecentGamesEpic() {
@@ -9,6 +9,16 @@ export default function RecentGamesEpic() {
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<string>('');
   const [newCompletions, setNewCompletions] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const gamesPerPage = 6;
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     async function fetchRecentGames() {
@@ -64,6 +74,19 @@ export default function RecentGamesEpic() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const totalPages = Math.ceil(games.length / gamesPerPage);
+  const startIndex = currentPage * gamesPerPage;
+  const endIndex = startIndex + gamesPerPage;
+  const currentGames = games.slice(startIndex, endIndex);
+
+  const goToPrevPage = () => {
+    setCurrentPage((prev) => Math.max(0, prev - 1));
+  };
+
+  const goToNextPage = () => {
+    setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1));
   };
 
   if (loading) {
@@ -148,7 +171,7 @@ export default function RecentGamesEpic() {
         <div className="w-32 h-1 bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 rounded-full mx-auto mt-4"></div>
       </div>
 
-      {/* Grid de juegos épicos */}
+      {/* Grid de juegos épicos con carrusel */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         {games.length === 0 ? (
           <div className="text-center py-12">
@@ -157,11 +180,58 @@ export default function RecentGamesEpic() {
             <p className="text-gray-500">Los juegos aparecerán aquí cuando los jugadores completen sus rondas</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {games.map((game, index) => (
-              <GameCardEpic key={game.id} game={game} index={index} />
-            ))}
-          </div>
+          <>
+            {/* Controles de navegación móvil */}
+            <div className="md:hidden flex items-center justify-between mb-4">
+              <button
+                onClick={goToPrevPage}
+                disabled={currentPage === 0}
+                className={`p-2 rounded-lg ${
+                  currentPage === 0
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600'
+                } transition-all`}
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+              <span className="text-sm font-semibold text-gray-600">
+                Página {currentPage + 1} de {totalPages}
+              </span>
+              <button
+                onClick={goToNextPage}
+                disabled={currentPage === totalPages - 1}
+                className={`p-2 rounded-lg ${
+                  currentPage === totalPages - 1
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600'
+                } transition-all`}
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Grid de juegos */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {(isMobile ? currentGames : games).map((game, index) => (
+                <GameCardEpic key={game.id} game={game} index={index} />
+              ))}
+            </div>
+
+            {/* Indicador de página móvil */}
+            <div className="md:hidden flex justify-center mt-4 space-x-2">
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentPage(index)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    index === currentPage
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-500 w-6'
+                      : 'bg-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
+          </>
         )}
       </div>
 

@@ -105,73 +105,73 @@ export default function RecordsSection() {
     details: { value: number | string; valueLabel: string; valueIcon: any; players: BestStatsDetails[] };
     rank?: string;
   }) => (
-    <div className={`relative ${bgGradient} rounded-2xl p-8 border-2 ${borderColor} shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-2 group overflow-hidden`}>
+    <div className={`relative ${bgGradient} rounded-xl md:rounded-2xl p-4 md:p-6 border-2 ${borderColor} shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-1 group overflow-hidden`}>
       {/* Efecto de brillo animado */}
       <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-${glowColor}/20 to-transparent -skew-x-12 transform translate-x-full group-hover:translate-x-[-200%] transition-transform duration-1000`}></div>
       
       {/* Contenido principal */}
       <div className="relative z-10">
         {/* Header con rango y título */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-3 md:mb-6">
           <div className="flex items-center">
-            <div className="text-4xl mr-3">{rank}</div>
+            <div className="text-2xl md:text-4xl mr-2 md:mr-3">{rank}</div>
             <div>
-              <h3 className="text-2xl font-black text-gray-900 mb-1">{title}</h3>
-              <div className="w-16 h-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"></div>
+              <h3 className="text-sm md:text-2xl font-black text-gray-900 mb-1">{title}</h3>
+              <div className="w-8 md:w-16 h-0.5 md:h-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"></div>
             </div>
           </div>
-          <div className="p-4 bg-white/20 backdrop-blur-sm rounded-xl">
-            <Icon className="h-8 w-8 text-gray-700" />
+          <div className="p-2 md:p-4 bg-white/20 backdrop-blur-sm rounded-lg md:rounded-xl">
+            <Icon className="h-4 w-4 md:h-8 md:w-8 text-gray-700" />
           </div>
         </div>
         
         {/* Valor del récord - ÉPICO */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-white/30 backdrop-blur-sm rounded-full mb-4 border-4 border-white/50">
-            <details.valueIcon className="h-10 w-10 text-gray-800" />
+        <div className="text-center mb-4 md:mb-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 md:w-24 md:h-24 bg-white/30 backdrop-blur-sm rounded-full mb-3 md:mb-4 border-2 md:border-4 border-white/50">
+            <details.valueIcon className="h-6 w-6 md:h-10 md:w-10 text-gray-800" />
           </div>
-          <p className="text-5xl font-black text-gray-900 mb-2">
+          <p className="text-3xl md:text-5xl font-black text-gray-900 mb-1 md:mb-2">
             {details.value}
           </p>
-          <p className="text-lg font-bold text-gray-700 uppercase tracking-wider">
+          <p className="text-xs md:text-lg font-bold text-gray-700 uppercase tracking-wider">
             {details.valueLabel}
           </p>
         </div>
 
         {/* Información de jugadores empatados - ÉPICA */}
-        <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 border border-white/30">
-          <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mb-4 shadow-lg">
-              <Crown className="h-8 w-8 text-white" />
+        <div className="bg-white/20 backdrop-blur-sm rounded-lg md:rounded-xl p-3 md:p-6 border border-white/30">
+          <div className="text-center mb-4 md:mb-6">
+            <div className="inline-flex items-center justify-center w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mb-3 md:mb-4 shadow-lg">
+              <Crown className="h-6 w-6 md:h-8 md:w-8 text-white" />
             </div>
             
             {/* Lista de jugadores empatados */}
-            <div className="space-y-4">
+            <div className="space-y-2 md:space-y-4">
               {details.players.map((player, index) => (
                 <div key={`${player.playerId}-${index}`} className="text-center">
-                  <h4 className="text-3xl font-black text-gray-900 mb-2 leading-tight">
+                  <h4 className="text-lg md:text-3xl font-black text-gray-900 mb-1 md:mb-2 leading-tight">
                     {player.playerName}
                   </h4>
-                  <div className={`inline-flex items-center ${getGenderBadgeColor(player.sexo)} text-white px-4 py-2 rounded-full shadow-lg`}>
-                    <span className="text-sm font-bold">{player.categoria}</span>
-                    <span className="mx-2 text-white/80">•</span>
-                    <span className="text-sm font-semibold">{player.club}</span>
+                  <div className={`inline-flex items-center ${getGenderBadgeColor(player.sexo)} text-white px-2 md:px-4 py-1 md:py-2 rounded-full shadow-lg`}>
+                    <span className="text-xs md:text-sm font-bold">{player.categoria}</span>
+                    <span className="mx-1 md:mx-2 text-white/80">•</span>
+                    <span className="text-xs md:text-sm font-semibold">{player.club}</span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="space-y-3 text-sm">
+          <div className="space-y-2 md:space-y-3 text-xs md:text-sm">
             {/* Evento + Lugar en una línea */}
             <div className="flex items-center">
-              <Trophy className="h-4 w-4 text-gray-500 mr-2 flex-shrink-0" />
+              <Trophy className="h-3 w-3 md:h-4 md:w-4 text-gray-500 mr-1 md:mr-2 flex-shrink-0" />
               <div className="flex-1">
                 <span className="font-medium text-gray-700">Evento:</span>
-                <span className="ml-2 text-gray-900 font-semibold">{details.players[0]?.eventName}</span>
-                <span className="mx-2 text-gray-400">•</span>
+                <span className="ml-1 md:ml-2 text-gray-900 font-semibold text-xs md:text-sm">{details.players[0]?.eventName}</span>
+                <span className="mx-1 md:mx-2 text-gray-400">•</span>
                 <span className="font-medium text-gray-700">Lugar:</span>
-                <span className="ml-1 text-gray-900 font-semibold">
+                <span className="ml-1 text-gray-900 font-semibold text-xs md:text-sm">
                   {details.players[0]?.courseName}
                   {details.players[0]?.city && details.players[0]?.state && `, ${details.players[0].city}, ${details.players[0].state}`}
                 </span>
@@ -181,14 +181,14 @@ export default function RecordsSection() {
             {/* Fecha abajo */}
             <div className="flex items-center">
               <span className="font-medium text-gray-700">Fecha:</span>
-              <span className="ml-2 text-gray-900 font-semibold">{details.players[0]?.date}</span>
+              <span className="ml-1 md:ml-2 text-gray-900 font-semibold text-xs md:text-sm">{details.players[0]?.date}</span>
             </div>
 
             {/* Empates si hay más de un jugador */}
             {details.players.length > 1 && (
               <div className="flex items-center">
                 <span className="font-medium text-gray-700">Empatados:</span>
-                <span className="ml-2 text-gray-900 font-semibold">{details.players.length} jugadores</span>
+                <span className="ml-1 md:ml-2 text-gray-900 font-semibold text-xs md:text-sm">{details.players.length} jugadores</span>
               </div>
             )}
           </div>
@@ -222,7 +222,7 @@ export default function RecordsSection() {
       </div>
 
       {/* Grid de records épicos */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
         {/* Mejor Score */}
         {bestStatsData?.bestScore && (
           <EpicRecordCard

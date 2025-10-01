@@ -77,44 +77,44 @@ export default function NewRoundForm({ players, onRoundCreated }: NewRoundFormPr
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 min-h-[600px]">
-      <div className="flex items-center mb-6">
-        <Plus className="h-6 w-6 text-green-600 mr-3" />
-        <h2 className="text-xl font-semibold text-gray-900">Nueva Ronda</h2>
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6 min-h-[500px] md:min-h-[600px]">
+      <div className="flex items-center mb-4 md:mb-6">
+        <Plus className="h-5 w-5 md:h-6 md:w-6 text-green-600 mr-2 md:mr-3" />
+        <h2 className="text-lg md:text-xl font-semibold text-gray-900">Nueva Ronda</h2>
       </div>
 
       {/* Indicador de progreso */}
-      <div className="mb-8">
-        <div className="flex items-center justify-center space-x-4">
+      <div className="mb-6 md:mb-8">
+        <div className="flex items-center justify-center space-x-2 md:space-x-4">
           <div className={`flex items-center ${step === 'player' ? 'text-green-600' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            <div className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center ${
               step === 'player' ? 'bg-green-100' : 'bg-gray-100'
             }`}>
-              <User className="h-4 w-4" />
+              <User className="h-3 w-3 md:h-4 md:w-4" />
             </div>
-            <span className="ml-2 text-sm font-medium">Jugador</span>
+            <span className="ml-1 md:ml-2 text-xs md:text-sm font-medium">Jugador</span>
           </div>
           
-          <div className={`w-8 h-0.5 ${step === 'round' || step === 'capture' ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+          <div className={`w-4 md:w-8 h-0.5 ${step === 'round' || step === 'capture' ? 'bg-green-500' : 'bg-gray-300'}`}></div>
           
           <div className={`flex items-center ${step === 'round' ? 'text-green-600' : step === 'capture' ? 'text-green-600' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            <div className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center ${
               step === 'round' || step === 'capture' ? 'bg-green-100' : 'bg-gray-100'
             }`}>
-              <Calendar className="h-4 w-4" />
+              <Calendar className="h-3 w-3 md:h-4 md:w-4" />
             </div>
-            <span className="ml-2 text-sm font-medium">Ronda</span>
+            <span className="ml-1 md:ml-2 text-xs md:text-sm font-medium">Ronda</span>
           </div>
           
-          <div className={`w-8 h-0.5 ${step === 'capture' ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+          <div className={`w-4 md:w-8 h-0.5 ${step === 'capture' ? 'bg-green-500' : 'bg-gray-300'}`}></div>
           
           <div className={`flex items-center ${step === 'capture' ? 'text-green-600' : 'text-gray-400'}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            <div className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center ${
               step === 'capture' ? 'bg-green-100' : 'bg-gray-100'
             }`}>
-              <MapPin className="h-4 w-4" />
+              <MapPin className="h-3 w-3 md:h-4 md:w-4" />
             </div>
-            <span className="ml-2 text-sm font-medium">Captura</span>
+            <span className="ml-1 md:ml-2 text-xs md:text-sm font-medium">Captura</span>
           </div>
         </div>
       </div>

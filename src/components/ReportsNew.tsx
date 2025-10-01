@@ -200,7 +200,7 @@ export default function ReportsNew() {
         <div className="relative z-10">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-2">
+              <h1 className="text-lg md:text-2xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-2">
                 REPORTES AVANZADOS
               </h1>
               <p className="text-gray-600 text-lg">Análisis profesional de rendimiento • Insights inteligentes</p>
@@ -221,45 +221,46 @@ export default function ReportsNew() {
             </div>
           </div>
 
-          {/* Tabs de vista */}
-          <div className="flex gap-3">
+          {/* Tabs de vista - RESPONSIVE */}
+          <div className="flex flex-col md:flex-row gap-2 md:gap-3 w-full md:w-auto">
             <button
               onClick={() => setActiveView('individual')}
-              className={`px-6 py-3 rounded-xl font-bold transition-all ${
+              className={`px-4 md:px-6 py-2 md:py-3 rounded-xl font-bold transition-all text-sm md:text-base ${
                 activeView === 'individual'
                   ? 'bg-indigo-600 text-white shadow-lg'
                   : 'bg-white text-gray-600 hover:bg-gray-50'
               }`}
             >
-              <div className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
+              <div className="flex items-center justify-center gap-2">
+                <Users className="h-4 w-4 md:h-5 md:w-5" />
                 <span>Individual</span>
               </div>
             </button>
             <button
               onClick={() => setActiveView('comparison')}
-              className={`px-6 py-3 rounded-xl font-bold transition-all ${
+              className={`px-4 md:px-6 py-2 md:py-3 rounded-xl font-bold transition-all text-sm md:text-base ${
                 activeView === 'comparison'
                   ? 'bg-indigo-600 text-white shadow-lg'
                   : 'bg-white text-gray-600 hover:bg-gray-50'
               }`}
             >
-              <div className="flex items-center gap-2">
-                <BarChart3 className="h-5 w-5" />
+              <div className="flex items-center justify-center gap-2">
+                <BarChart3 className="h-4 w-4 md:h-5 md:w-5" />
                 <span>Comparación</span>
               </div>
             </button>
             <button
               onClick={() => setActiveView('group')}
-              className={`px-6 py-3 rounded-xl font-bold transition-all ${
+              className={`px-4 md:px-6 py-2 md:py-3 rounded-xl font-bold transition-all text-sm md:text-base ${
                 activeView === 'group'
                   ? 'bg-indigo-600 text-white shadow-lg'
                   : 'bg-white text-gray-600 hover:bg-gray-50'
               }`}
             >
-              <div className="flex items-center gap-2">
-                <Target className="h-5 w-5" />
-                <span>Análisis Grupal</span>
+              <div className="flex items-center justify-center gap-2">
+                <Target className="h-4 w-4 md:h-5 md:w-5" />
+                <span className="hidden sm:inline">Análisis Grupal</span>
+                <span className="sm:hidden">Grupal</span>
               </div>
             </button>
           </div>
@@ -267,7 +268,7 @@ export default function ReportsNew() {
       </div>
 
       {/* Filtros inteligentes */}
-      <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+      <div className="bg-white rounded-2xl shadow-lg p-4 md:p-6 border border-gray-200">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Filter className="h-5 w-5 text-indigo-600" />
@@ -284,7 +285,7 @@ export default function ReportsNew() {
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4">
           {/* Filtro por categoría */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Categoría</label>
@@ -472,20 +473,20 @@ function IndividualView({
   getScoreColor 
 }: any) {
   return (
-    <div className="grid grid-cols-1 gap-6">
+    <div className="grid grid-cols-1 gap-2 md:gap-4 md:p-6">
       {players.map((player: PlayerStats) => (
         <div key={player.player_id} className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
           {/* Header del jugador */}
-          <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 border-b border-gray-200">
+          <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 md:p-6 border-b border-gray-200">
             <div className="flex items-start justify-between">
-              <div className="flex items-center gap-4">
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold ${
+              <div className="flex items-center gap-2 md:gap-4">
+                <div className={`w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center text-white text-lg md:text-lg md:text-2xl font-bold ${
                   player.sexo === 'M' ? 'bg-blue-500' : 'bg-pink-500'
                 }`}>
                   {player.display_name.charAt(0)}
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black text-gray-900">{player.display_name}</h3>
+                  <h3 className="text-lg md:text-2xl font-black text-gray-900">{player.display_name}</h3>
                   <div className="flex items-center gap-3 mt-1">
                     <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                       player.sexo === 'M' ? 'bg-blue-100 text-blue-700' : 'bg-pink-100 text-pink-700'
@@ -512,15 +513,15 @@ function IndividualView({
           </div>
 
           {/* Stats resumidas */}
-          <div className="p-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="p-4 md:p-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-6">
               {/* Score Promedio */}
               <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-1">
                   <Target className="h-4 w-4 text-blue-600" />
                   <p className="text-xs font-medium text-blue-900">Score Promedio</p>
                 </div>
-                <p className="text-3xl font-black text-blue-600">{player.stats?.scoring.averageScore || 0}</p>
+                <p className="text-lg md:text-2xl md:text-3xl font-black text-blue-600">{player.stats?.scoring.averageScore || 0}</p>
                 <div className="flex items-center gap-1 mt-1">
                   {getImprovementIcon(player.stats?.scoring.improvement || 0)}
                   <p className="text-xs text-gray-600">{getImprovementText(player.stats?.scoring.improvement || 0)}</p>
@@ -533,7 +534,7 @@ function IndividualView({
                   <Crosshair className="h-4 w-4 text-green-600" />
                   <p className="text-xs font-medium text-green-900">FIR%</p>
                 </div>
-                <p className="text-3xl font-black text-green-600">{player.stats?.ballStriking.averageFIR.toFixed(1) || 0}%</p>
+                <p className="text-lg md:text-2xl md:text-3xl font-black text-green-600">{player.stats?.ballStriking.averageFIR.toFixed(1) || 0}%</p>
                 <p className="text-xs text-gray-600 mt-1">Precisión Tee</p>
               </div>
 
@@ -543,7 +544,7 @@ function IndividualView({
                   <Flag className="h-4 w-4 text-purple-600" />
                   <p className="text-xs font-medium text-purple-900">GIR%</p>
                 </div>
-                <p className="text-3xl font-black text-purple-600">{player.stats?.ballStriking.averageGIR.toFixed(1) || 0}%</p>
+                <p className="text-lg md:text-2xl md:text-3xl font-black text-purple-600">{player.stats?.ballStriking.averageGIR.toFixed(1) || 0}%</p>
                 <p className="text-xs text-gray-600 mt-1">Greens en Regulación</p>
               </div>
 
@@ -553,13 +554,13 @@ function IndividualView({
                   <CircleDot className="h-4 w-4 text-orange-600" />
                   <p className="text-xs font-medium text-orange-900">Putts/Hoyo</p>
                 </div>
-                <p className="text-3xl font-black text-orange-600">{player.stats?.shortGame.averagePutts.toFixed(2) || 0}</p>
+                <p className="text-lg md:text-2xl md:text-3xl font-black text-orange-600">{player.stats?.shortGame.averagePutts.toFixed(2) || 0}</p>
                 <p className="text-xs text-gray-600 mt-1">Promedio</p>
               </div>
             </div>
 
             {/* Fortalezas y Debilidades */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4">
               {/* Fortalezas */}
               <div className="bg-green-50 rounded-xl p-4 border border-green-200">
                 <div className="flex items-center gap-2 mb-3">
@@ -613,7 +614,7 @@ function IndividualView({
                   Análisis Detallado
                 </h4>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4">
                   {/* Distribución de scores */}
                   <div className="bg-gray-50 rounded-xl p-4">
                     <h5 className="font-bold text-gray-900 mb-3 text-sm">Distribución de Scores</h5>
@@ -732,15 +733,15 @@ function ComparisonView({ players }: { players: PlayerStats[] }) {
 
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 border-b border-gray-200">
-        <h3 className="text-2xl font-black text-gray-900 flex items-center gap-2">
+      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 md:p-6 border-b border-gray-200">
+        <h3 className="text-lg md:text-2xl font-black text-gray-900 flex items-center gap-2">
           <BarChart3 className="h-6 w-6 text-indigo-600" />
           Comparación de Jugadores
         </h3>
         <p className="text-gray-600 mt-1">Análisis comparativo de {players.length} jugadores</p>
       </div>
 
-      <div className="p-6">
+      <div className="p-4 md:p-6">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -817,46 +818,46 @@ function GroupAnalysisView({ players }: { players: PlayerStats[] }) {
     <div className="space-y-6">
       {/* Resumen del grupo */}
       <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
-        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 border-b border-gray-200">
-          <h3 className="text-2xl font-black text-gray-900 flex items-center gap-2">
+        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 md:p-6 border-b border-gray-200">
+          <h3 className="text-lg md:text-2xl font-black text-gray-900 flex items-center gap-2">
             <Target className="h-6 w-6 text-indigo-600" />
             Análisis Grupal
           </h3>
           <p className="text-gray-600 mt-1">Estadísticas consolidadas de {players.length} jugadores</p>
         </div>
 
-        <div className="p-6">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+        <div className="p-4 md:p-6">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-4 mb-6">
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4">
               <p className="text-xs font-medium text-blue-900 mb-1">Score Promedio</p>
-              <p className="text-3xl font-black text-blue-600">{groupAvg.score.toFixed(1)}</p>
+              <p className="text-lg md:text-2xl md:text-3xl font-black text-blue-600">{groupAvg.score.toFixed(1)}</p>
             </div>
             <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4">
               <p className="text-xs font-medium text-green-900 mb-1">FIR%</p>
-              <p className="text-3xl font-black text-green-600">{groupAvg.fir.toFixed(1)}%</p>
+              <p className="text-lg md:text-2xl md:text-3xl font-black text-green-600">{groupAvg.fir.toFixed(1)}%</p>
             </div>
             <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4">
               <p className="text-xs font-medium text-purple-900 mb-1">GIR%</p>
-              <p className="text-3xl font-black text-purple-600">{groupAvg.gir.toFixed(1)}%</p>
+              <p className="text-lg md:text-2xl md:text-3xl font-black text-purple-600">{groupAvg.gir.toFixed(1)}%</p>
             </div>
             <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4">
               <p className="text-xs font-medium text-orange-900 mb-1">Putts/Hoyo</p>
-              <p className="text-3xl font-black text-orange-600">{groupAvg.putts.toFixed(2)}</p>
+              <p className="text-lg md:text-2xl md:text-3xl font-black text-orange-600">{groupAvg.putts.toFixed(2)}</p>
             </div>
             <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl p-4">
               <p className="text-xs font-medium text-pink-900 mb-1">Scrambling%</p>
-              <p className="text-3xl font-black text-pink-600">{groupAvg.scrambling.toFixed(1)}%</p>
+              <p className="text-lg md:text-2xl md:text-3xl font-black text-pink-600">{groupAvg.scrambling.toFixed(1)}%</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4">
             {/* Mejor Score */}
             <div className="bg-green-50 rounded-xl p-4 border border-green-200">
               <div className="flex items-center gap-2 mb-2">
                 <Award className="h-5 w-5 text-green-600" />
                 <h4 className="font-bold text-green-900">Mejor Score Promedio</h4>
               </div>
-              <p className="font-black text-2xl text-green-600 mb-1">{bestScore.display_name}</p>
+              <p className="font-black text-lg md:text-2xl text-green-600 mb-1">{bestScore.display_name}</p>
               <p className="text-sm text-green-700">{bestScore.stats?.scoring.averageScore.toFixed(1) || 0} strokes</p>
             </div>
 
@@ -866,7 +867,7 @@ function GroupAnalysisView({ players }: { players: PlayerStats[] }) {
                 <TrendingUp className="h-5 w-5 text-blue-600" />
                 <h4 className="font-bold text-blue-900">Mayor Mejora</h4>
               </div>
-              <p className="font-black text-2xl text-blue-600 mb-1">{bestImprovement.display_name}</p>
+              <p className="font-black text-lg md:text-2xl text-blue-600 mb-1">{bestImprovement.display_name}</p>
               <p className="text-sm text-blue-700">
                 {(bestImprovement.stats?.scoring.improvement || 0) > 0 ? '-' : '+'}{Math.abs(bestImprovement.stats?.scoring.improvement || 0).toFixed(1)} strokes
               </p>
@@ -878,7 +879,7 @@ function GroupAnalysisView({ players }: { players: PlayerStats[] }) {
                 <Activity className="h-5 w-5 text-purple-600" />
                 <h4 className="font-bold text-purple-900">Más Activo</h4>
               </div>
-              <p className="font-black text-2xl text-purple-600 mb-1">
+              <p className="font-black text-lg md:text-2xl text-purple-600 mb-1">
                 {players.reduce((most, curr) => curr.totalRounds > most.totalRounds ? curr : most).display_name}
               </p>
               <p className="text-sm text-purple-700">
@@ -890,7 +891,7 @@ function GroupAnalysisView({ players }: { players: PlayerStats[] }) {
       </div>
 
       {/* Recomendaciones */}
-      <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl shadow-lg p-6 border border-amber-200">
+      <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl shadow-lg p-4 md:p-6 border border-amber-200">
         <div className="flex items-start gap-3">
           <div className="p-3 bg-amber-100 rounded-xl">
             <Zap className="h-6 w-6 text-amber-600" />

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Users, Trophy, Star, TrendingUp } from 'lucide-react';
+import { Users, Trophy, Star, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import PlayerCardNew from './PlayerCardNew';
 import PlayerFilters from './PlayerFilters';
 
@@ -9,6 +9,16 @@ export default function PlayersSectionNew() {
   const [players, setPlayers] = useState<any[]>([]);
   const [filteredPlayers, setFilteredPlayers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const playersPerPage = 6;
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     async function fetchPlayerStats() {
@@ -29,6 +39,20 @@ export default function PlayersSectionNew() {
 
   const handleFilterChange = (filtered: any[]) => {
     setFilteredPlayers(filtered);
+    setCurrentPage(0); // Reset to first page when filters change
+  };
+
+  const totalPages = Math.ceil(filteredPlayers.length / playersPerPage);
+  const startIndex = currentPage * playersPerPage;
+  const endIndex = startIndex + playersPerPage;
+  const currentPlayers = filteredPlayers.slice(startIndex, endIndex);
+
+  const goToPrevPage = () => {
+    setCurrentPage((prev) => Math.max(0, prev - 1));
+  };
+
+  const goToNextPage = () => {
+    setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1));
   };
 
   if (loading) {
@@ -80,7 +104,7 @@ export default function PlayersSectionNew() {
         onFilterChange={handleFilterChange} 
       />
 
-      {/* Grid de jugadores */}
+      {/* Grid de jugadores con carrusel */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         {filteredPlayers.length === 0 ? (
           <div className="text-center py-12">
@@ -89,11 +113,58 @@ export default function PlayersSectionNew() {
             <p className="text-gray-500">Intenta ajustar los filtros para ver más resultados</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredPlayers.map((player) => (
-              <PlayerCardNew key={player.player_id} player={player} />
-            ))}
-          </div>
+          <>
+            {/* Controles de navegación móvil */}
+            <div className="md:hidden flex items-center justify-between mb-4">
+              <button
+                onClick={goToPrevPage}
+                disabled={currentPage === 0}
+                className={`p-2 rounded-lg ${
+                  currentPage === 0
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600'
+                } transition-all`}
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+              <span className="text-sm font-semibold text-gray-600">
+                Página {currentPage + 1} de {totalPages}
+              </span>
+              <button
+                onClick={goToNextPage}
+                disabled={currentPage === totalPages - 1}
+                className={`p-2 rounded-lg ${
+                  currentPage === totalPages - 1
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600'
+                } transition-all`}
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+            </div>
+
+            {/* Grid de jugadores */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {(isMobile ? currentPlayers : filteredPlayers).map((player) => (
+                <PlayerCardNew key={player.player_id} player={player} />
+              ))}
+            </div>
+
+            {/* Indicador de página móvil */}
+            <div className="md:hidden flex justify-center mt-4 space-x-2">
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentPage(index)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    index === currentPage
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-500 w-6'
+                      : 'bg-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
+          </>
         )}
       </div>
 

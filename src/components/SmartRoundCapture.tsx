@@ -343,69 +343,71 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
   const isPar3 = currentHoleData?.par === '3';
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
-      {/* Header Épico con Score en Tiempo Real */}
-      <div className="bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 rounded-3xl shadow-2xl text-white p-8">
-        <div className="flex items-center justify-between mb-6">
+    <div className="max-w-6xl mx-auto space-y-4 md:space-y-6">
+      {/* Header Épico OPTIMIZADO PARA MÓVIL */}
+      <div className="bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 rounded-2xl md:rounded-3xl shadow-2xl text-white p-4 md:p-8">
+        {/* Primera fila: Botón volver y progreso */}
+        <div className="flex items-center justify-between mb-3 md:mb-4">
           <button
             onClick={onBack}
-            className="flex items-center text-white/80 hover:text-white transition-colors"
+            className="flex items-center text-white/80 hover:text-white transition-colors text-sm md:text-base"
           >
-            <ArrowLeft className="h-5 w-5 mr-2" />
-            Volver
+            <ArrowLeft className="h-4 w-4 md:h-5 md:w-5 mr-1 md:mr-2" />
+            <span className="hidden sm:inline">Volver</span>
           </button>
           
-          <div className="text-center">
-            <h2 className="text-3xl font-black mb-2">🏌️‍♂️ CAPTURA INTELIGENTE 🏌️‍♀️</h2>
-            <p className="text-white/90 text-lg">{round.ronda_name} - {round.course_name}</p>
-          </div>
-          
           <div className="text-right">
-            <p className="text-white/80 text-sm">Progreso</p>
-            <p className="text-2xl font-bold">
-              {getCompletedHoles()}/{holes.length} hoyos
+            <p className="text-white/80 text-xs md:text-sm">Progreso</p>
+            <p className="text-lg md:text-2xl font-bold">
+              {getCompletedHoles()}/{holes.length}
             </p>
           </div>
         </div>
 
-        {/* Información del jugador con score en tiempo real */}
-        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-bold mr-6 ${
-                player.sexo === 'M' ? 'bg-blue-500' : 'bg-pink-500'
-              }`}>
-                {player.display_name.charAt(0)}
-              </div>
-              <div>
-                <h3 className="text-2xl font-bold">{player.display_name}</h3>
-                <p className="text-white/80 text-lg">
-                  {player.categoria} • {player.sexo === 'M' ? 'Masculino' : 'Femenino'} • {player.club}
-                </p>
-              </div>
+        {/* Título centrado */}
+        <div className="text-center mb-3 md:mb-6">
+          <h2 className="text-lg md:text-3xl font-black mb-1 md:mb-2">CAPTURA INTELIGENTE</h2>
+          <p className="text-white/90 text-xs md:text-lg">{round.ronda_name}</p>
+          <p className="text-white/80 text-xs md:text-base">{round.course_name}</p>
+        </div>
+
+        {/* Información del jugador con score - OPTIMIZADO */}
+        <div className="bg-white/10 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 md:p-6 space-y-3 md:space-y-0">
+          {/* Jugador */}
+          <div className="flex items-center justify-center md:justify-start">
+            <div className={`w-10 h-10 md:w-16 md:h-16 rounded-full flex items-center justify-center text-white text-base md:text-2xl font-bold mr-2 md:mr-4 ${
+              player.sexo === 'M' ? 'bg-blue-500' : 'bg-pink-500'
+            }`}>
+              {player.display_name.charAt(0)}
             </div>
-            
-            {/* Score en tiempo real épico */}
-            <div className="text-center">
-              <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 mb-2">
-                <div className="flex items-center justify-center space-x-4">
-                  <div className="text-center">
-                    <p className="text-white/80 text-sm">SCORE TOTAL</p>
-                    <p className="text-4xl font-black">{getTotalScore()}</p>
-                  </div>
-                  <div className="w-px h-12 bg-white/30"></div>
-                  <div className="text-center">
-                    <p className="text-white/80 text-sm">VS PAR</p>
-                    <p className={`text-3xl font-black ${getScoreToPar() <= 0 ? 'text-green-300' : 'text-red-300'}`}>
-                      {getScoreToPar() > 0 ? '+' : ''}{getScoreToPar()}
-                    </p>
-                  </div>
+            <div className="text-center md:text-left">
+              <h3 className="text-base md:text-2xl font-bold">{player.display_name}</h3>
+              <p className="text-white/80 text-xs md:text-base">
+                {player.categoria} • {player.club}
+              </p>
+            </div>
+          </div>
+          
+          {/* Score en tiempo real - ÉPICO Y COMPACTO */}
+          <div className="border-t border-white/20 pt-3 md:pt-0 md:border-t-0">
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3 md:p-4">
+              <div className="flex items-center justify-center space-x-4 md:space-x-8">
+                <div className="text-center">
+                  <p className="text-white/80 text-xs md:text-sm font-medium mb-1">SCORE TOTAL</p>
+                  <p className="text-2xl md:text-4xl font-black">{getTotalScore()}</p>
+                </div>
+                <div className="w-px h-12 md:h-16 bg-white/30"></div>
+                <div className="text-center">
+                  <p className="text-white/80 text-xs md:text-sm font-medium mb-1">VS PAR</p>
+                  <p className={`text-2xl md:text-4xl font-black ${getScoreToPar() <= 0 ? 'text-green-300' : 'text-red-300'}`}>
+                    {getScoreToPar() > 0 ? '+' : ''}{getScoreToPar()}
+                  </p>
                 </div>
               </div>
-              <div className="flex items-center justify-center space-x-2">
-                <Trophy className="h-5 w-5 text-yellow-300" />
-                <span className="text-sm font-medium">Score en Tiempo Real</span>
-                <Zap className="h-5 w-5 text-yellow-300" />
+              <div className="flex items-center justify-center space-x-2 mt-2 md:mt-3">
+                <Trophy className="h-4 w-4 md:h-5 md:w-5 text-yellow-300" />
+                <span className="text-xs md:text-sm font-medium">Score en Tiempo Real</span>
+                <Zap className="h-4 w-4 md:h-5 md:w-5 text-yellow-300" />
               </div>
             </div>
           </div>
@@ -427,7 +429,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
                 const tee = tees.find(t => t.tee_id === e.target.value);
                 setSelectedTee(tee || null);
               }}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-lg"
+              className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-lg"
             >
               {tees.map(tee => (
                 <option key={tee.tee_id} value={tee.tee_id}>
@@ -450,7 +452,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
                 setStartingHole(hole);
                 setCurrentHole(hole);
               }}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-lg"
+              className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-lg"
             >
               {holes.map(hole => (
                 <option key={hole.hoyo} value={hole.hoyo}>
@@ -464,9 +466,9 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
 
       {/* Captura inteligente del hoyo actual */}
       {currentHoleData && currentStats && (
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
-          <div className="text-center mb-8">
-            <h3 className="text-4xl font-black text-gray-900 mb-2">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-4 md:p-8">
+          <div className="text-center mb-4 md:mb-8">
+            <h3 className="text-2xl md:text-4xl font-black text-gray-900 mb-2">
               Hoyo {currentHole} - Par {currentHoleData.par}
             </h3>
             <p className="text-gray-600 text-lg">Handicap: {currentHoleData.handicap_hoyo}</p>
@@ -505,7 +507,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
                     updateHoleStat(currentHole, 'resultado', resultado);
                   }
                 }}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-xl text-center font-bold"
+                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-lg md:text-xl text-center font-bold"
                 placeholder="Golpes"
               />
             </div>
@@ -521,7 +523,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
                 max="4"
                 value={currentStats.putts}
                 onChange={(e) => updateHoleStat(currentHole, 'putts', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-xl text-center font-bold"
+                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-lg md:text-xl text-center font-bold"
                 placeholder="Putts"
               />
             </div>
@@ -534,7 +536,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
               <select
                 value={currentStats.palo_salida}
                 onChange={(e) => updateHoleStat(currentHole, 'palo_salida', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
               >
                 <option value="">Seleccionar...</option>
                 <option value="Driver">Driver</option>
@@ -571,7 +573,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
                   type="text"
                   placeholder="Ej: 7 Iron, Wedge 56°, etc."
                   onChange={(e) => updateHoleStat(currentHole, 'palo_salida', e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
               </div>
             )}
@@ -585,7 +587,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
                 <select
                   value={currentStats.fairway_hit}
                   onChange={(e) => updateHoleStat(currentHole, 'fairway_hit', e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 >
                   <option value="">Seleccionar...</option>
                   <option value="Sí">Sí</option>
@@ -602,7 +604,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
               <select
                 value={currentStats.green_in_regulation}
                 onChange={(e) => updateHoleStat(currentHole, 'green_in_regulation', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
               >
                 <option value="">Seleccionar...</option>
                 <option value="Sí">Sí</option>
@@ -618,7 +620,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
               <select
                 value={currentStats.bunker}
                 onChange={(e) => updateHoleStat(currentHole, 'bunker', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
               >
                 <option value="No">No</option>
                 <option value="Sí">Sí</option>
@@ -636,7 +638,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
                 max="3"
                 value={currentStats.penalty_ob}
                 onChange={(e) => updateHoleStat(currentHole, 'penalty_ob', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-center"
+                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-center"
                 placeholder="0"
               />
             </div>
@@ -651,7 +653,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
                 max="3"
                 value={currentStats.penalty_agua}
                 onChange={(e) => updateHoleStat(currentHole, 'penalty_agua', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-center"
+                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-center"
                 placeholder="0"
               />
             </div>
@@ -664,7 +666,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
               <textarea
                 value={currentStats.notas}
                 onChange={(e) => updateHoleStat(currentHole, 'notas', e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 rows={3}
                 placeholder="Notas adicionales del hoyo..."
               />
@@ -704,19 +706,21 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
         </div>
       )}
 
-      {/* Navegación épica */}
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
-        <div className="flex items-center justify-between">
+      {/* Navegación épica - OPTIMIZADA PARA MÓVIL */}
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-3 md:p-6">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between space-y-3 md:space-y-0">
+          {/* Botón Anterior */}
           <button
             onClick={() => handleHoleChange(Math.max(1, currentHole - 1))}
             disabled={currentHole === 1}
-            className="flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+            className="flex items-center justify-center px-4 md:px-6 py-2 md:py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm md:text-base"
           >
-            <ArrowLeft className="h-5 w-5 mr-2" />
+            <ArrowLeft className="h-4 w-4 md:h-5 md:w-5 mr-2" />
             Anterior
           </button>
 
-          <div className="flex space-x-2">
+          {/* Selector de hoyos - ADAPTATIVO */}
+          <div className="flex flex-wrap justify-center gap-1 md:gap-2 max-w-full overflow-x-auto px-2">
             {holes.map((_, index) => {
               const holeNumber = index + 1;
               const isCompleted = holeStats.find(stat => stat.hoyo === holeNumber.toString())?.strokes !== '';
@@ -726,7 +730,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
                 <button
                   key={holeNumber}
                   onClick={() => handleHoleChange(holeNumber)}
-                  className={`w-12 h-12 rounded-xl text-sm font-bold transition-all ${
+                  className={`w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl text-xs md:text-sm font-bold transition-all ${
                     isCurrent
                       ? 'bg-green-500 text-white shadow-lg scale-110'
                       : isCompleted
@@ -740,31 +744,32 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
             })}
           </div>
 
+          {/* Botón Siguiente */}
           <button
             onClick={() => handleHoleChange(Math.min(holes.length, currentHole + 1))}
             disabled={currentHole === holes.length}
-            className="flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+            className="flex items-center justify-center px-4 md:px-6 py-2 md:py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm md:text-base"
           >
             Siguiente
-            <ArrowRight className="h-5 w-5 ml-2" />
+            <ArrowRight className="h-4 w-4 md:h-5 md:w-5 ml-2" />
           </button>
         </div>
       </div>
 
-      {/* Botones de acción épicos */}
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-gray-600">
+      {/* Botones de acción épicos - OPTIMIZADOS PARA MÓVIL */}
+      <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-3 md:p-6">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between space-y-3 md:space-y-0">
+          <div className="text-xs md:text-sm text-gray-600 text-center md:text-left">
             <p className="font-semibold">Hoyos completados: {getCompletedHoles()}/{holes.length}</p>
             <p className="font-semibold">Score total: {getTotalScore()} ({getScoreToPar() > 0 ? '+' : ''}{getScoreToPar()})</p>
           </div>
           
-          <div className="flex space-x-4">
+          <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
             <button
               onClick={() => setShowSummary(true)}
-              className="flex items-center px-6 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 font-semibold"
+              className="flex items-center justify-center px-4 md:px-6 py-2 md:py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 font-semibold text-sm md:text-base"
             >
-              <CheckCircle className="h-5 w-5 mr-2" />
+              <CheckCircle className="h-4 w-4 md:h-5 md:w-5 mr-2" />
               Ver Resumen
             </button>
             
@@ -773,10 +778,10 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
             <button
               onClick={handleSave}
               disabled={!canSave() || saving}
-              className="flex items-center px-6 py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+              className="flex items-center justify-center px-4 md:px-6 py-2 md:py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm md:text-base"
             >
-              <Save className="h-5 w-5 mr-2" />
-              {saving ? 'Guardando...' : 'Guardar Completa'}
+              <Save className="h-4 w-4 md:h-5 md:w-5 mr-2" />
+              {saving ? 'Guardando...' : 'Guardar'}
             </button>
           </div>
         </div>
