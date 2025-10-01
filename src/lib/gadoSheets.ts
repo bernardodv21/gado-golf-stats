@@ -417,9 +417,9 @@ export async function getHole18CaptureDates(): Promise<Map<string, string>> {
     const captureDates = new Map<string, string>();
     
     rows.slice(1).forEach((row) => {
-      const summaryKey = row[21]; // summary_key está en la columna V
-      const hole = row[5]; // hoyo está en la columna F
-      const timestamp = row[1]; // timestamp está en la columna B
+      const summaryKey = row[21]; // summary_key está en la columna V (índice 21)
+      const hole = row[6]; // hoyo está en la columna G (índice 6)
+      const timestamp = row[1]; // timestamp está en la columna B (índice 1)
       
       console.log(`Processing row: hole=${hole}, summaryKey=${summaryKey}, timestamp=${timestamp}`);
       
