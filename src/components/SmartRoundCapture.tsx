@@ -246,7 +246,10 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
   };
 
   const getCompletedHoles = () => {
-    return holeStats.filter(stat => stat.strokes && stat.strokes !== '').length;
+    return holeStats.filter(stat => 
+      stat.strokes && stat.strokes !== '' && 
+      stat.putts && stat.putts !== ''
+    ).length;
   };
 
   const getTotalScore = () => {
@@ -264,8 +267,11 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
   };
 
   const canSave = () => {
-    const completedHoles = holeStats.filter(stat => stat.strokes && stat.strokes !== '');
-    return completedHoles.length >= 9 && validationErrors.length === 0;
+    const completedHoles = holeStats.filter(stat => 
+      stat.strokes && stat.strokes !== '' && 
+      stat.putts && stat.putts !== ''
+    );
+    return completedHoles.length === 18 && validationErrors.length === 0;
   };
 
   // Función eliminada: No se permiten rondas incompletas
@@ -781,8 +787,14 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
               className="flex items-center justify-center px-4 md:px-6 py-2 md:py-3 bg-green-500 text-white rounded-xl hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed font-semibold text-sm md:text-base"
             >
               <Save className="h-4 w-4 md:h-5 md:w-5 mr-2" />
-              {saving ? 'Guardando...' : 'Guardar'}
+              {saving ? 'Guardando...' : `Guardar (${getCompletedHoles()}/18)`}
             </button>
+            
+            {!canSave() && getCompletedHoles() < 18 && (
+              <p className="text-xs md:text-sm text-red-600 font-medium mt-2 text-center">
+                ⚠️ Completa todos los 18 hoyos para guardar la ronda
+              </p>
+            )}
           </div>
         </div>
       </div>
