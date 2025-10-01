@@ -63,7 +63,7 @@ interface HoleStats {
   green_in_regulation: string;
   bunker: string;
   penalty_ob: string;
-  penalty_agua: string;
+  penalty_hazard: string;
   first_putt_dist_m: string;
   up_down_intento: string;
   up_down_exito: string;
@@ -120,7 +120,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
           green_in_regulation: '',
           bunker: 'No', // Valor por defecto
           penalty_ob: '0',
-          penalty_agua: '0',
+          penalty_hazard: '0',
           first_putt_dist_m: '',
           up_down_intento: '',
           up_down_exito: '',
@@ -201,7 +201,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
       }
 
       // Validación de penalties
-      const totalPenalties = parseInt(stats.penalty_ob) + parseInt(stats.penalty_agua);
+      const totalPenalties = parseInt(stats.penalty_ob) + parseInt(stats.penalty_hazard);
       if (totalPenalties > 0 && approachShots < totalPenalties) {
         errors.push('Los penalties no pueden ser más que los golpes de aproximación');
       }
@@ -651,14 +651,14 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                💧 Penalty Agua
+                ⚠️ Penalty Hazard / Agua / Otra
               </label>
               <input
                 type="number"
                 min="0"
                 max="3"
-                value={currentStats.penalty_agua}
-                onChange={(e) => updateHoleStat(currentHole, 'penalty_agua', e.target.value)}
+                value={currentStats.penalty_hazard}
+                onChange={(e) => updateHoleStat(currentHole, 'penalty_hazard', e.target.value)}
                 className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-center"
                 placeholder="0"
               />
@@ -690,7 +690,7 @@ export default function SmartRoundCapture({ player, round, onBack, onComplete }:
                 greenInRegulation={currentStats.green_in_regulation}
                 bunker={currentStats.bunker}
                 penaltyOb={parseInt(currentStats.penalty_ob)}
-                penaltyAgua={parseInt(currentStats.penalty_agua)}
+                penaltyHazard={parseInt(currentStats.penalty_hazard)}
               />
             </div>
           )}

@@ -92,7 +92,7 @@ export async function POST(request: Request) {
         convertToBoolean(stat.green_in_regulation || ''), // O: green_in_regulation (TRUE/FALSE)
         convertToBoolean(stat.bunker || ''), // P: bunker (TRUE/FALSE)
         stat.penalty_ob || '', // Q: penalty_ob
-        stat.penalty_agua || '', // R: penalty_agua
+        stat.penalty_hazard || '', // R: penalty_hazard
         upDownIntento, // S: up_down_intento (calculado) - CORREGIDO
         upDownExito, // T: up_down_exito (calculado) - CORREGIDO
         stat.notas || '', // U: notas - CORREGIDO

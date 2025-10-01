@@ -11,7 +11,7 @@ interface GolfLogicHelperProps {
   greenInRegulation: string;
   bunker: string;
   penaltyOb: number;
-  penaltyAgua: number;
+  penaltyHazard: number;
 }
 
 export default function GolfLogicHelper({
@@ -22,7 +22,7 @@ export default function GolfLogicHelper({
   greenInRegulation,
   bunker,
   penaltyOb,
-  penaltyAgua
+  penaltyHazard
 }: GolfLogicHelperProps) {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [warnings, setWarnings] = useState<string[]>([]);
@@ -33,7 +33,7 @@ export default function GolfLogicHelper({
 
     if (strokes > 0 && putts > 0) {
       const approachShots = strokes - putts;
-      const totalPenalties = penaltyOb + penaltyAgua;
+      const totalPenalties = penaltyOb + penaltyHazard;
       
       // Lógica inteligente de golf
       if (approachShots === (par - 2)) {
@@ -82,7 +82,7 @@ export default function GolfLogicHelper({
 
     setSuggestions(newSuggestions);
     setWarnings(newWarnings);
-  }, [strokes, putts, par, fairwayHit, greenInRegulation, bunker, penaltyOb, penaltyAgua]);
+  }, [strokes, putts, par, fairwayHit, greenInRegulation, bunker, penaltyOb, penaltyHazard]);
 
   if (suggestions.length === 0 && warnings.length === 0) {
     return null;
