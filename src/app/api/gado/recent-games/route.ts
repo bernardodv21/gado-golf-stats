@@ -17,7 +17,6 @@ export async function GET() {
     const roundsWithCaptureDates = completedRounds
       .map(round => {
         const captureDate = hole18CaptureDates.get(round.summary_key);
-        console.log(`Round ${round.summary_key}: captureDate = ${captureDate}`);
         return {
           ...round,
           captureDate: captureDate || new Date(0).toISOString() // Fallback a fecha muy antigua si no hay captura
@@ -26,7 +25,6 @@ export async function GET() {
       .sort((a, b) => {
         const dateA = new Date(a.captureDate).getTime();
         const dateB = new Date(b.captureDate).getTime();
-        console.log(`Sorting: ${a.summary_key} (${a.captureDate}) vs ${b.summary_key} (${b.captureDate})`);
         return dateB - dateA; // Más reciente primero
       })
       .slice(0, 8); // Tomar solo las últimas 8
