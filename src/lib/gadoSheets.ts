@@ -403,6 +403,37 @@ export async function getGadoSummaryRounds(): Promise<GadoSummaryRound[]> {
   }
 }
 
+// Función para obtener la fecha de captura del hoyo 18 para cada ronda
+export async function getHole18CaptureDates(): Promise<Map<string, string>> {
+  try {
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'stats_hole!A:V',
+    });
+
+    const rows = response.data.values;
+    if (!rows || rows.length <= 1) return new Map();
+
+    const captureDates = new Map<string, string>();
+    
+    rows.slice(1).forEach((row) => {
+      const summaryKey = row[21]; // summary_key está en la columna V
+      const hole = row[5]; // hoyo está en la columna F
+      const timestamp = row[1]; // timestamp está en la columna B
+      
+      // Solo procesar el hoyo 18
+      if (hole === '18' && summaryKey && timestamp) {
+        captureDates.set(summaryKey, timestamp);
+      }
+    });
+
+    return captureDates;
+  } catch (error) {
+    console.error('Error fetching hole 18 capture dates:', error);
+    return new Map();
+  }
+}
+
 // Función para obtener estadísticas por hoyo
 export async function getGadoStatsHole(): Promise<GadoStatsHole[]> {
   try {

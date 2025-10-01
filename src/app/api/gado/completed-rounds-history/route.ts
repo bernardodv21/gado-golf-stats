@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
+import { getGadoRounds } from '@/lib/gadoSheets';
 
 const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
 
@@ -14,6 +15,13 @@ export async function GET() {
     });
 
     const sheets = google.sheets({ version: 'v4', auth });
+
+    // Obtener datos de rounds para las fechas correctas
+    const rounds = await getGadoRounds();
+    const roundsMap = new Map();
+    rounds.forEach(round => {
+      roundsMap.set(round.round_id, round);
+    });
 
     // Obtener datos de summary_round (rondas completadas)
     const summaryResponse = await sheets.spreadsheets.values.get({
@@ -69,6 +77,7 @@ export async function GET() {
       // Solo procesar rondas que estén completadas y tengan score > 0
       if (statusRonda === 'completa' && totalScore > 0) {
         const course = coursesMap.get(courseId);
+        const roundData = roundsMap.get(roundId);
         
         if (course) {
           completedRounds.push({
@@ -101,11 +110,12 @@ export async function GET() {
             bogeys: parseInt(summaryRow[25]) || 0, // bogeys
             doubleBogeys: parseInt(summaryRow[26]) || 0, // dobles
             worse: parseInt(summaryRow[27]) || 0, // triple_o_mas
-            startDate: '', // No disponible en summary_round
-            endDate: '', // No disponible en summary_round
+            startDate: roundData?.fecha || '', // Usar fecha de la tabla rounds
+            endDate: roundData?.fecha || '', // Usar fecha de la tabla rounds
             weather: '', // No disponible en summary_round
             notes: '', // No disponible en summary_round
-            status: statusRonda
+            status: statusRonda,
+            gameDate: roundData?.fecha || '' // Fecha del evento/juego
           });
         }
       }

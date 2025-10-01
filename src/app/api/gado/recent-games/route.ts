@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getGadoSummaryRounds, getGadoPlayers, getGadoEvents, getGadoRounds, getGadoCourses } from '@/lib/gadoSheets';
+import { getGadoSummaryRounds, getGadoPlayers, getGadoEvents, getGadoRounds, getGadoCourses, getHole18CaptureDates } from '@/lib/gadoSheets';
 
 export async function GET() {
   try {
@@ -8,15 +8,25 @@ export async function GET() {
     const events = await getGadoEvents();
     const rounds = await getGadoRounds();
     const courses = await getGadoCourses();
+    const hole18CaptureDates = await getHole18CaptureDates();
 
-    // Filtrar solo rondas completas y tomar las últimas 8
-    const completedRounds = summaryRounds
-      .filter(round => round.status_ronda === 'completa')
-      .slice(-8) // Últimas 8 rondas
-      .reverse(); // Más reciente primero
+    // Filtrar solo rondas completas
+    const completedRounds = summaryRounds.filter(round => round.status_ronda === 'completa');
+
+    // Enriquecer con fechas de captura del hoyo 18 y ordenar por fecha de captura
+    const roundsWithCaptureDates = completedRounds
+      .map(round => {
+        const captureDate = hole18CaptureDates.get(round.summary_key);
+        return {
+          ...round,
+          captureDate: captureDate || new Date(0).toISOString() // Fallback a fecha muy antigua si no hay captura
+        };
+      })
+      .sort((a, b) => new Date(b.captureDate).getTime() - new Date(a.captureDate).getTime()) // Más reciente primero
+      .slice(0, 8); // Tomar solo las últimas 8
 
     // Enriquecer con información detallada
-    const recentGames = completedRounds.map(round => {
+    const recentGames = roundsWithCaptureDates.map(round => {
       const player = players.find(p => p.player_id === round.player_id);
       const roundData = rounds.find(r => r.round_id === round.round_id);
       const event = roundData ? events.find(e => e.event_id === roundData.event_id) : null;

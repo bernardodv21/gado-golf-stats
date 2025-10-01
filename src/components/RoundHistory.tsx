@@ -146,12 +146,40 @@ export default function RoundHistory({ rounds }: RoundHistoryProps) {
   };
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
-    });
+    if (!dateString || dateString === '' || dateString === 'undefined') {
+      return 'Fecha no disponible';
+    }
+    
+    try {
+      // Si es formato DD-MM-YYYY, convertir a formato estándar
+      if (dateString.includes('-') && dateString.length === 10) {
+        const [day, month, year] = dateString.split('-');
+        if (day && month && year) {
+          const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+          if (!isNaN(date.getTime())) {
+            return date.toLocaleDateString('es-ES', {
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric'
+            });
+          }
+        }
+      }
+      
+      // Intentar parsear como fecha estándar
+      const date = new Date(dateString);
+      if (!isNaN(date.getTime())) {
+        return date.toLocaleDateString('es-ES', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        });
+      }
+      
+      return 'Fecha no disponible';
+    } catch (error) {
+      return 'Fecha no disponible';
+    }
   };
 
   if (rounds.length === 0) {
