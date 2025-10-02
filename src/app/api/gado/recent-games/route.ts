@@ -10,8 +10,8 @@ export async function GET() {
     const courses = await getGadoCourses();
     const hole18CaptureDates = await getHole18CaptureDates();
 
-    // Filtrar solo rondas completas
-    const completedRounds = summaryRounds.filter(round => round.status_ronda === 'completa');
+    // TEMPORAL: Mostrar todas las rondas para debuggear
+    const completedRounds = summaryRounds.filter(round => round.status_ronda === 'completa' || round.status_ronda === 'activa');
     console.log(`Total summary rounds: ${summaryRounds.length}`);
     console.log(`Completed rounds: ${completedRounds.length}`);
     console.log(`Recent completed rounds:`, completedRounds.slice(-5).map(r => ({ 
