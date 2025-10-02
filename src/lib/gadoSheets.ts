@@ -408,7 +408,7 @@ export async function getHole18CaptureDates(): Promise<Map<string, string>> {
   try {
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'stats_hole!B:G:V', // Solo columnas B (timestamp), G (hoyo), V (summary_key)
+      range: 'stats_hole!A:V', // Leer todas las columnas desde A hasta V
     });
 
     const rows = response.data.values;
@@ -417,9 +417,9 @@ export async function getHole18CaptureDates(): Promise<Map<string, string>> {
     const captureDates = new Map<string, string>();
     
     rows.slice(1).forEach((row) => {
-      const timestamp = row[0]; // timestamp está en la columna B (índice 0 en el nuevo rango)
-      const hole = row[1]; // hoyo está en la columna G (índice 1 en el nuevo rango)
-      const summaryKey = row[2]; // summary_key está en la columna V (índice 2 en el nuevo rango)
+      const timestamp = row[1]; // timestamp está en la columna B (índice 1)
+      const hole = row[6]; // hoyo está en la columna G (índice 6)
+      const summaryKey = row[21]; // summary_key está en la columna V (índice 21)
       
       // Solo procesar el hoyo 18 (verificar tanto string como número)
       if ((hole === '18' || hole === 18) && summaryKey && timestamp) {
