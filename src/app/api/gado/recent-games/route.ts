@@ -10,8 +10,8 @@ export async function GET() {
     const courses = await getGadoCourses();
     const hole18CaptureDates = await getHole18CaptureDates();
 
-    // TEMPORAL: Mostrar todas las rondas para debuggear
-    const completedRounds = summaryRounds.filter(round => round.status_ronda === 'completa' || round.status_ronda === 'activa');
+            // Filtrar solo rondas completadas
+            const completedRounds = summaryRounds.filter(round => round.status_ronda === 'completa');
     console.log(`Total summary rounds: ${summaryRounds.length}`);
     console.log(`Completed rounds: ${completedRounds.length}`);
     console.log(`Recent completed rounds:`, completedRounds.slice(-5).map(r => ({ 
@@ -21,25 +21,56 @@ export async function GET() {
       date: r.summary_key 
     })));
 
-    // Enriquecer con fechas de captura del hoyo 18 y ordenar por fecha de captura
-    const roundsWithCaptureDates = completedRounds
-      .map(round => {
-        const captureDate = hole18CaptureDates.get(round.summary_key);
-        const roundData = rounds.find(r => r.round_id === round.round_id);
-        // Usar fecha de captura del hoyo 18 si existe, sino usar fecha del evento de la tabla rounds
-        const finalDate = captureDate || roundData?.fecha || new Date(0).toISOString();
-        console.log(`Round ${round.summary_key}: captureDate=${captureDate}, eventDate=${roundData?.fecha}, finalDate=${finalDate}`);
-        return {
-          ...round,
-          captureDate: finalDate
-        };
-      })
-      .sort((a, b) => {
-        const dateA = new Date(a.captureDate).getTime();
-        const dateB = new Date(b.captureDate).getTime();
-        return dateB - dateA; // Más reciente primero
-      })
-      .slice(0, 8); // Tomar solo las últimas 8
+            // Enriquecer con fechas de captura del hoyo 18 y ordenar por fecha de captura
+            const roundsWithCaptureDates = completedRounds
+              .map(round => {
+                const captureDate = hole18CaptureDates.get(round.summary_key);
+                const roundData = rounds.find(r => r.round_id === round.round_id);
+                
+                // Función para parsear fechas correctamente
+                const parseDate = (dateStr: string): string => {
+                  if (!dateStr || dateStr === 'undefined') return new Date(0).toISOString();
+                  
+                  try {
+                    // Si viene en formato MM/DD/YYYY HH:mm:ss de Google Sheets
+                    if (dateStr.includes('/') && dateStr.includes(':')) {
+                      const [datePart, timePart] = dateStr.split(' ');
+                      const [month, day, year] = datePart.split('/');
+                      const [hour, minute, second] = timePart.split(':');
+                      const parsedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute), parseInt(second));
+                      return parsedDate.toISOString();
+                    }
+                    
+                    // Si viene en formato DD-MM-YYYY
+                    if (dateStr.includes('-') && dateStr.length === 10) {
+                      const [day, month, year] = dateStr.split('-');
+                      const parsedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+                      return parsedDate.toISOString();
+                    }
+                    
+                    // Intentar parsear como fecha estándar
+                    const parsedDate = new Date(dateStr);
+                    return isNaN(parsedDate.getTime()) ? new Date(0).toISOString() : parsedDate.toISOString();
+                  } catch (error) {
+                    return new Date(0).toISOString();
+                  }
+                };
+                
+                // Usar fecha de captura del hoyo 18 si existe, sino usar fecha del evento de la tabla rounds
+                const finalDate = parseDate(captureDate || roundData?.fecha || '');
+                console.log(`Round ${round.summary_key}: captureDate=${captureDate}, eventDate=${roundData?.fecha}, finalDate=${finalDate}`);
+                return {
+                  ...round,
+                  captureDate: finalDate
+                };
+              })
+              .sort((a, b) => {
+                const dateA = new Date(a.captureDate).getTime();
+                const dateB = new Date(b.captureDate).getTime();
+                console.log(`Sorting: ${a.summary_key} (${a.captureDate}) vs ${b.summary_key} (${b.captureDate})`);
+                return dateB - dateA; // Más reciente primero
+              })
+              .slice(0, 8); // Tomar solo las últimas 8
 
     // Enriquecer con información detallada
     const recentGames = roundsWithCaptureDates.map(round => {
