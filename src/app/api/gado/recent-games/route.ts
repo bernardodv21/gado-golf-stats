@@ -12,6 +12,14 @@ export async function GET() {
 
     // Filtrar solo rondas completas
     const completedRounds = summaryRounds.filter(round => round.status_ronda === 'completa');
+    console.log(`Total summary rounds: ${summaryRounds.length}`);
+    console.log(`Completed rounds: ${completedRounds.length}`);
+    console.log(`Recent completed rounds:`, completedRounds.slice(-5).map(r => ({ 
+      player: r.player_id, 
+      round: r.round_id, 
+      status: r.status_ronda,
+      date: r.summary_key 
+    })));
 
     // Enriquecer con fechas de captura del hoyo 18 y ordenar por fecha de captura
     const roundsWithCaptureDates = completedRounds
@@ -20,6 +28,7 @@ export async function GET() {
         const roundData = rounds.find(r => r.round_id === round.round_id);
         // Usar fecha de captura del hoyo 18 si existe, sino usar fecha del evento de la tabla rounds
         const finalDate = captureDate || roundData?.fecha || new Date(0).toISOString();
+        console.log(`Round ${round.summary_key}: captureDate=${captureDate}, eventDate=${roundData?.fecha}, finalDate=${finalDate}`);
         return {
           ...round,
           captureDate: finalDate
