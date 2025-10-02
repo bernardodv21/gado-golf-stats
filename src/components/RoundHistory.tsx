@@ -74,6 +74,37 @@ export default function RoundHistory({ rounds }: RoundHistoryProps) {
     return clubList.sort();
   }, [rounds]);
 
+  // Función para parsear fechas correctamente (igual que en recent-games)
+  const parseDate = (dateStr: string): Date => {
+    if (!dateStr || dateStr === 'undefined') return new Date(0);
+    
+    try {
+      // Si viene en formato MM/DD/YYYY HH:mm:ss de Google Sheets
+      if (dateStr.includes('/') && dateStr.includes(':')) {
+        const [datePart, timePart] = dateStr.split(' ');
+        const [month, day, year] = datePart.split('/');
+        const [hour, minute, second] = timePart.split(':');
+        const parsedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute), parseInt(second));
+        return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
+      }
+      
+      // Si viene en formato DD-MM-YYYY
+      if (dateStr.includes('-') && dateStr.length === 10) {
+        const [day, month, year] = dateStr.split('-');
+        if (day && month && year) {
+          const parsedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+          return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
+        }
+      }
+      
+      // Intentar parsear como fecha estándar
+      const parsedDate = new Date(dateStr);
+      return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
+    } catch (error) {
+      return new Date(0);
+    }
+  };
+
   // Filtrar y ordenar rondas
   const filteredRounds = useMemo(() => {
     let filtered = rounds.filter(round => {
@@ -147,37 +178,6 @@ export default function RoundHistory({ rounds }: RoundHistoryProps) {
     if (scoreToPar <= 0) return <Trophy className="h-5 w-5" />;
     if (scoreToPar <= 5) return <Star className="h-5 w-5" />;
     return <Target className="h-5 w-5" />;
-  };
-
-  // Función para parsear fechas correctamente (igual que en recent-games)
-  const parseDate = (dateStr: string): Date => {
-    if (!dateStr || dateStr === 'undefined') return new Date(0);
-    
-    try {
-      // Si viene en formato MM/DD/YYYY HH:mm:ss de Google Sheets
-      if (dateStr.includes('/') && dateStr.includes(':')) {
-        const [datePart, timePart] = dateStr.split(' ');
-        const [month, day, year] = datePart.split('/');
-        const [hour, minute, second] = timePart.split(':');
-        const parsedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute), parseInt(second));
-        return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
-      }
-      
-      // Si viene en formato DD-MM-YYYY
-      if (dateStr.includes('-') && dateStr.length === 10) {
-        const [day, month, year] = dateStr.split('-');
-        if (day && month && year) {
-          const parsedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-          return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
-        }
-      }
-      
-      // Intentar parsear como fecha estándar
-      const parsedDate = new Date(dateStr);
-      return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
-    } catch (error) {
-      return new Date(0);
-    }
   };
 
   const formatDate = (dateString: string) => {
