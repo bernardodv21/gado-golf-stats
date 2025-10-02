@@ -88,7 +88,11 @@ export default function RoundHistory({ rounds }: RoundHistoryProps) {
     // Ordenar
     switch (sortBy) {
       case 'recent':
-        filtered.sort((a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime());
+        filtered.sort((a, b) => {
+          const dateA = parseDate(a.endDate).getTime();
+          const dateB = parseDate(b.endDate).getTime();
+          return dateB - dateA; // Más reciente primero
+        });
         break;
       case 'score':
         filtered.sort((a, b) => a.totalScore - b.totalScore);
@@ -145,38 +149,53 @@ export default function RoundHistory({ rounds }: RoundHistoryProps) {
     return <Target className="h-5 w-5" />;
   };
 
+  // Función para parsear fechas correctamente (igual que en recent-games)
+  const parseDate = (dateStr: string): Date => {
+    if (!dateStr || dateStr === 'undefined') return new Date(0);
+    
+    try {
+      // Si viene en formato MM/DD/YYYY HH:mm:ss de Google Sheets
+      if (dateStr.includes('/') && dateStr.includes(':')) {
+        const [datePart, timePart] = dateStr.split(' ');
+        const [month, day, year] = datePart.split('/');
+        const [hour, minute, second] = timePart.split(':');
+        const parsedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute), parseInt(second));
+        return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
+      }
+      
+      // Si viene en formato DD-MM-YYYY
+      if (dateStr.includes('-') && dateStr.length === 10) {
+        const [day, month, year] = dateStr.split('-');
+        if (day && month && year) {
+          const parsedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+          return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
+        }
+      }
+      
+      // Intentar parsear como fecha estándar
+      const parsedDate = new Date(dateStr);
+      return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
+    } catch (error) {
+      return new Date(0);
+    }
+  };
+
   const formatDate = (dateString: string) => {
     if (!dateString || dateString === '' || dateString === 'undefined') {
       return 'Fecha no disponible';
     }
     
     try {
-      // Si es formato DD-MM-YYYY, convertir a formato estándar
-      if (dateString.includes('-') && dateString.length === 10) {
-        const [day, month, year] = dateString.split('-');
-        if (day && month && year) {
-          const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-          if (!isNaN(date.getTime())) {
-            return date.toLocaleDateString('es-ES', {
-              day: '2-digit',
-              month: 'short',
-              year: 'numeric'
-            });
-          }
-        }
+      const date = parseDate(dateString);
+      if (date.getTime() === 0) {
+        return 'Fecha no disponible';
       }
       
-      // Intentar parsear como fecha estándar
-      const date = new Date(dateString);
-      if (!isNaN(date.getTime())) {
-        return date.toLocaleDateString('es-ES', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric'
-        });
-      }
-      
-      return 'Fecha no disponible';
+      return date.toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      });
     } catch (error) {
       return 'Fecha no disponible';
     }
