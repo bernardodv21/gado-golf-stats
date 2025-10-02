@@ -17,9 +17,12 @@ export async function GET() {
     const roundsWithCaptureDates = completedRounds
       .map(round => {
         const captureDate = hole18CaptureDates.get(round.summary_key);
+        const roundData = rounds.find(r => r.round_id === round.round_id);
+        // Usar fecha de captura del hoyo 18 si existe, sino usar fecha del evento de la tabla rounds
+        const finalDate = captureDate || roundData?.fecha || new Date(0).toISOString();
         return {
           ...round,
-          captureDate: captureDate || new Date(0).toISOString() // Fallback a fecha muy antigua si no hay captura
+          captureDate: finalDate
         };
       })
       .sort((a, b) => {
