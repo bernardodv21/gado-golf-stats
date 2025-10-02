@@ -421,11 +421,8 @@ export async function getHole18CaptureDates(): Promise<Map<string, string>> {
       const hole = row[1]; // hoyo está en la columna G (índice 1 en el nuevo rango)
       const summaryKey = row[2]; // summary_key está en la columna V (índice 2 en el nuevo rango)
       
-      console.log(`Processing row: hole=${hole}, summaryKey=${summaryKey}, timestamp=${timestamp}`);
-      
       // Solo procesar el hoyo 18 (verificar tanto string como número)
       if ((hole === '18' || hole === 18) && summaryKey && timestamp) {
-        console.log(`Found hole 18 capture: ${summaryKey} -> ${timestamp}`);
         captureDates.set(summaryKey, timestamp);
       }
     });
